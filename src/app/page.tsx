@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { BirthdayIntro } from "@/components/birthday/BirthdayIntro";
+import { CakeCuttingScene } from "@/components/birthday/CakeCuttingScene";
 import { Navigation } from "@/components/layout/Navigation";
 import { StudyHub } from "@/components/medical/StudyHub";
 import { MedAiAssistant } from "@/components/medical/MedAiAssistant";
@@ -22,13 +23,19 @@ import { BreathingAnimation } from "@/components/birthday/BreathingAnimation";
 
 export default function Home() {
   const [showIntro, setShowIntro] = useState(true);
+  const [showCakeCutting, setShowCakeCutting] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
 
   const handleIntroComplete = () => {
     setFadeOut(true);
     setTimeout(() => {
       setShowIntro(false);
+      setShowCakeCutting(true);
     }, 1000);
+  };
+
+  const handleCakeCuttingComplete = () => {
+    setShowCakeCutting(false);
   };
 
   return (
@@ -43,7 +50,11 @@ export default function Home() {
         </div>
       )}
 
-      {!showIntro && (
+      {showCakeCutting && (
+        <CakeCuttingScene onContinue={handleCakeCuttingComplete} />
+      )}
+
+      {!showIntro && !showCakeCutting && (
         <div className="animate-fade-in-up">
           {/* Magical background effects */}
           <SparkleTrail />
