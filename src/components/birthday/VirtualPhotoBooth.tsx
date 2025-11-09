@@ -9,7 +9,7 @@ export const VirtualPhotoBooth = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [isCamera On, setIsCameraOn] = useState(false);
+  const [isCameraOn, setIsCameraOn] = useState(false);
 
   const startCamera = async () => {
     try {
