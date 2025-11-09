@@ -10,7 +10,6 @@ import { MotivationZone } from "@/components/medical/MotivationZone";
 import { SurpriseGift } from "@/components/birthday/SurpriseGift";
 import { StethoscopeHeartSound } from "@/components/medical/StethoscopeHeartSound";
 import { Footer } from "@/components/layout/Footer";
-import { MusicToggle } from "@/components/layout/MusicToggle";
 import { SparkleTrail } from "@/components/birthday/SparkleTrail";
 import { HeartRipple } from "@/components/birthday/HeartRipple";
 import { MoonStars } from "@/components/birthday/MoonStars";
@@ -63,7 +62,6 @@ export default function Home() {
           <FloatingWishes />
           
           <Navigation />
-          <MusicToggle />
           
           <main className="pt-16">
             {/* Hero Welcome Section */}
