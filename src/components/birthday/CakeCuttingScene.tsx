@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Heart, Star, PartyPopper, Stethoscope, Gift } from "lucide-react";
+import { Sparkles, Heart, Star, PartyPopper } from "lucide-react";
 
 interface CakePiece {
   id: number;
@@ -268,7 +268,7 @@ export const CakeCuttingScene = ({ onContinue }: CakeCuttingSceneProps) => {
       <div className="relative z-10 flex flex-col min-h-screen px-4 py-6 md:py-8">
         
         {/* Cake Scene - Constrained height to prevent overflow */}
-        <div className="flex-1 flex flex-col items-center justify-center max-h-[75vh] md:max-h-[80vh] overflow-y-auto">
+        <div className="flex-1 flex flex-col items-center justify-center">
           <motion.div
             className="relative mb-4 md:mb-6"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -526,7 +526,7 @@ export const CakeCuttingScene = ({ onContinue }: CakeCuttingSceneProps) => {
           <AnimatePresence>
             {showPieces && (
               <motion.div
-                className="w-full max-w-5xl mx-auto px-4 mb-4"
+                className="w-full max-w-5xl mx-auto px-4 mb-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
@@ -584,158 +584,55 @@ export const CakeCuttingScene = ({ onContinue }: CakeCuttingSceneProps) => {
           </AnimatePresence>
         </div>
 
-        {/* Three Navigation Buttons - Fixed at bottom with padding */}
+        {/* Single "Continue Celebration" Button - Fixed at bottom center */}
         <AnimatePresence>
           {showNavigation && (
             <motion.div
-              className="sticky bottom-0 w-full max-w-5xl mx-auto px-4 py-4 md:py-6"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+              className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50"
+              initial={{ opacity: 0, y: 50, scale: 0.8 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                delay: 0.5,
+                type: "spring",
+                stiffness: 200,
+                damping: 15
+              }}
             >
-              <p className="text-center text-white/90 text-sm md:text-base mb-3 md:mb-4 font-medium drop-shadow-lg">
-                Choose your adventure 🚀
-              </p>
-              
-              {/* Desktop: Horizontal layout */}
-              <div className="hidden md:flex gap-3 justify-center">
-                <motion.button
-                  onClick={onContinue}
-                  className="group relative px-8 py-4 bg-white/90 hover:bg-white text-purple-700 rounded-2xl font-bold text-lg shadow-2xl overflow-hidden transition-all"
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
+              <motion.button
+                onClick={onContinue}
+                className="group relative px-8 py-4 bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 text-white rounded-full font-bold text-lg md:text-xl shadow-2xl overflow-hidden"
+                whileHover={{ 
+                  scale: 1.1,
+                  boxShadow: "0 0 40px rgba(236, 72, 153, 0.8), 0 0 80px rgba(168, 85, 247, 0.6)"
+                }}
+                whileTap={{ scale: 0.95 }}
+                animate={{
+                  boxShadow: [
+                    "0 10px 40px rgba(236, 72, 153, 0.6)",
+                    "0 15px 60px rgba(168, 85, 247, 0.8)",
+                    "0 10px 40px rgba(236, 72, 153, 0.6)",
+                  ],
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Continue Celebration 🎉
+                </span>
+                
+                {/* Animated glow effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-yellow-300/30 via-pink-300/30 to-purple-300/30"
                   animate={{
-                    boxShadow: [
-                      "0 10px 40px rgba(255, 255, 255, 0.3)",
-                      "0 15px 50px rgba(255, 255, 255, 0.5)",
-                      "0 10px 40px rgba(255, 255, 255, 0.3)",
-                    ],
+                    x: ["-100%", "100%"],
                   }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <span className="relative z-10 flex items-center gap-2">
-                    <PartyPopper className="w-5 h-5" />
-                    Continue Celebration
-                  </span>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-pink-200 to-purple-200 opacity-0 group-hover:opacity-50 transition-opacity"
-                  />
-                </motion.button>
-
-                <motion.button
-                  className="group relative px-8 py-4 bg-white/90 hover:bg-white text-blue-700 rounded-2xl font-bold text-lg shadow-2xl overflow-hidden transition-all"
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  animate={{
-                    boxShadow: [
-                      "0 10px 40px rgba(255, 255, 255, 0.3)",
-                      "0 15px 50px rgba(255, 255, 255, 0.5)",
-                      "0 10px 40px rgba(255, 255, 255, 0.3)",
-                    ],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.2 }}
-                >
-                  <span className="relative z-10 flex items-center gap-2">
-                    <Stethoscope className="w-5 h-5" />
-                    Medical Magic Tools
-                  </span>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-blue-200 to-cyan-200 opacity-0 group-hover:opacity-50 transition-opacity"
-                  />
-                </motion.button>
-
-                <motion.button
-                  className="group relative px-8 py-4 bg-white/90 hover:bg-white text-pink-700 rounded-2xl font-bold text-lg shadow-2xl overflow-hidden transition-all"
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  animate={{
-                    boxShadow: [
-                      "0 10px 40px rgba(255, 255, 255, 0.3)",
-                      "0 15px 50px rgba(255, 255, 255, 0.5)",
-                      "0 10px 40px rgba(255, 255, 255, 0.3)",
-                    ],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.4 }}
-                >
-                  <span className="relative z-10 flex items-center gap-2">
-                    <Gift className="w-5 h-5" />
-                    More Surprises
-                  </span>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-pink-200 to-rose-200 opacity-0 group-hover:opacity-50 transition-opacity"
-                  />
-                </motion.button>
-              </div>
-
-              {/* Mobile: Vertical stacked layout */}
-              <div className="flex md:hidden flex-col gap-3">
-                <motion.button
-                  onClick={onContinue}
-                  className="group relative w-full px-8 py-5 bg-white/90 hover:bg-white text-purple-700 rounded-2xl font-bold text-lg shadow-2xl overflow-hidden transition-all"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  animate={{
-                    boxShadow: [
-                      "0 10px 40px rgba(255, 255, 255, 0.3)",
-                      "0 15px 50px rgba(255, 255, 255, 0.5)",
-                      "0 10px 40px rgba(255, 255, 255, 0.3)",
-                    ],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-3">
-                    <PartyPopper className="w-6 h-6" />
-                    Continue Celebration
-                  </span>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-pink-200 to-purple-200 opacity-0 group-active:opacity-50 transition-opacity"
-                  />
-                </motion.button>
-
-                <motion.button
-                  className="group relative w-full px-8 py-5 bg-white/90 hover:bg-white text-blue-700 rounded-2xl font-bold text-lg shadow-2xl overflow-hidden transition-all"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  animate={{
-                    boxShadow: [
-                      "0 10px 40px rgba(255, 255, 255, 0.3)",
-                      "0 15px 50px rgba(255, 255, 255, 0.5)",
-                      "0 10px 40px rgba(255, 255, 255, 0.3)",
-                    ],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.2 }}
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-3">
-                    <Stethoscope className="w-6 h-6" />
-                    Medical Magic Tools
-                  </span>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-blue-200 to-cyan-200 opacity-0 group-active:opacity-50 transition-opacity"
-                  />
-                </motion.button>
-
-                <motion.button
-                  className="group relative w-full px-8 py-5 bg-white/90 hover:bg-white text-pink-700 rounded-2xl font-bold text-lg shadow-2xl overflow-hidden transition-all"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  animate={{
-                    boxShadow: [
-                      "0 10px 40px rgba(255, 255, 255, 0.3)",
-                      "0 15px 50px rgba(255, 255, 255, 0.5)",
-                      "0 10px 40px rgba(255, 255, 255, 0.3)",
-                    ],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.4 }}
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-3">
-                    <Gift className="w-6 h-6" />
-                    More Surprises
-                  </span>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-pink-200 to-rose-200 opacity-0 group-active:opacity-50 transition-opacity"
-                  />
-                </motion.button>
-              </div>
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                />
+                
+                {/* Sparkles */}
+                <Sparkles className="absolute -top-2 -right-2 w-5 h-5 text-yellow-300 animate-sparkle" />
+                <Sparkles className="absolute -bottom-2 -left-2 w-4 h-4 text-pink-300 animate-sparkle" style={{ animationDelay: "0.5s" }} />
+                <Sparkles className="absolute top-1/2 left-2 w-3 h-3 text-white animate-sparkle" style={{ animationDelay: "1s" }} />
+              </motion.button>
             </motion.div>
           )}
         </AnimatePresence>
