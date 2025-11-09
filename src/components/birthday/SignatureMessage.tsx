@@ -107,7 +107,7 @@ export const SignatureMessage = () => {
           className="space-y-6"
         >
           <h3 className="text-4xl md:text-6xl handwritten bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent">
-            With love, from your friends 💌
+             with regards , your well wisher 💌
           </h3>
 
           <div className="flex items-center justify-center gap-4 flex-wrap">
