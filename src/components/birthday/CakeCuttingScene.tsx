@@ -20,21 +20,51 @@ export const CakeCuttingScene = ({ onContinue }: CakeCuttingSceneProps) => {
   const [cakePhase, setCakePhase] = useState<"initial" | "cutting" | "cut">("initial");
   const [revealedPieces, setRevealedPieces] = useState<number[]>([]);
   const [showFireworks, setShowFireworks] = useState(false);
+  const [lights, setLights] = useState<any[]>([]);
+  const [confetti, setConfetti] = useState<any[]>([]);
+  const [particles, setParticles] = useState<any[]>([]);
+  const [showMessage, setShowMessage] = useState(false);
+  const [showPieces, setShowPieces] = useState(false);
+  const [showNavigation, setShowNavigation] = useState(false);
+  const [flashLights, setFlashLights] = useState(false);
 
-  const cakePieces = [
-    { emoji: "💖", wish: "May your healing hands touch countless lives" },
-    { emoji: "🌟", wish: "Shine bright, future Dr. Satwika!" },
-    { emoji: "🩺", wish: "Your stethoscope will hear miracles" },
-    { emoji: "✨", wish: "Dreams do come true, one patient at a time" },
-    { emoji: "🎂", wish: "Celebrate every small victory" },
-    { emoji: "💫", wish: "You're destined for greatness!" },
-  ];
+  const [cakePieces, setCakePieces] = useState([
+    { id: 0, emoji: "💖", message: "May your healing hands touch countless lives", clicked: false },
+    { id: 1, emoji: "🌟", message: "Shine bright, future Dr. Satwika!", clicked: false },
+    { id: 2, emoji: "🩺", message: "Your stethoscope will hear miracles", clicked: false },
+    { id: 3, emoji: "✨", message: "Dreams do come true, one patient at a time", clicked: false },
+    { id: 4, emoji: "🎂", message: "Celebrate every small victory", clicked: false },
+    { id: 5, emoji: "💫", message: "You're destined for greatness!", clicked: false },
+  ]);
 
   const handleCutCake = () => {
     setCakePhase("cutting");
+    setFlashLights(true);
+    
+    // Create particles burst
+    const newParticles = Array.from({ length: 30 }, (_, i) => ({
+      id: i,
+      x: 50,
+      y: 50,
+      type: ["heart", "glitter", "sparkle"][i % 3],
+    }));
+    setParticles(newParticles);
+    
     setTimeout(() => {
       setCakePhase("cut");
       setShowFireworks(true);
+      setShowMessage(true);
+      setFlashLights(false);
+      playCelebrationSound();
+      
+      setTimeout(() => {
+        setShowPieces(true);
+        setParticles([]);
+        
+        setTimeout(() => {
+          setShowNavigation(true);
+        }, 1000);
+      }, 1500);
     }, 2000);
   };
 
