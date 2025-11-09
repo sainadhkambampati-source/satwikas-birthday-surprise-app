@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Heart, Star } from "lucide-react";
+import { FireworksMessage } from "./FireworksMessage";
 
 interface CakePiece {
   id: number;
@@ -12,27 +13,30 @@ interface CakePiece {
 }
 
 interface CakeCuttingSceneProps {
-  onContinue?: () => void;
+  onContinue: () => void;
 }
 
 export const CakeCuttingScene = ({ onContinue }: CakeCuttingSceneProps) => {
-  const [cakeState, setCakeState] = useState<"intact" | "cutting" | "cut">("intact");
-  const [showMessage, setShowMessage] = useState(false);
-  const [showPieces, setShowPieces] = useState(false);
-  const [showNavigation, setShowNavigation] = useState(false);
-  const [lights, setLights] = useState<Array<{ id: number; color: string; x: string; y: string; delay: number }>>([]);
-  const [confetti, setConfetti] = useState<Array<{ id: number; x: number; color: string; delay: number }>>([]);
-  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; type: string }>>([]);
-  const [showKnife, setShowKnife] = useState(false);
-  const [flashLights, setFlashLights] = useState(false);
-  const [cakePieces, setCakePieces] = useState<CakePiece[]>([
-    { id: 1, message: "A slice of joy", emoji: "🍰", clicked: false },
-    { id: 2, message: "A wish of success", emoji: "🎓", clicked: false },
-    { id: 3, message: "A sprinkle of love", emoji: "💕", clicked: false },
-    { id: 4, message: "Healing hearts ahead", emoji: "🩺", clicked: false },
-    { id: 5, message: "Dreams come true", emoji: "✨", clicked: false },
-    { id: 6, message: "Endless laughter", emoji: "😊", clicked: false },
-  ]);
+  const [cakePhase, setCakePhase] = useState<"initial" | "cutting" | "cut">("initial");
+  const [revealedPieces, setRevealedPieces] = useState<number[]>([]);
+  const [showFireworks, setShowFireworks] = useState(false);
+
+  const cakePieces = [
+    { emoji: "💖", wish: "May your healing hands touch countless lives" },
+    { emoji: "🌟", wish: "Shine bright, future Dr. Satwika!" },
+    { emoji: "🩺", wish: "Your stethoscope will hear miracles" },
+    { emoji: "✨", wish: "Dreams do come true, one patient at a time" },
+    { emoji: "🎂", wish: "Celebrate every small victory" },
+    { emoji: "💫", wish: "You're destined for greatness!" },
+  ];
+
+  const handleCutCake = () => {
+    setCakePhase("cutting");
+    setTimeout(() => {
+      setCakePhase("cut");
+      setShowFireworks(true);
+    }, 2000);
+  };
 
   // Initialize ambient effects (reduced for less clutter)
   useEffect(() => {
@@ -143,49 +147,6 @@ export const CakeCuttingScene = ({ onContinue }: CakeCuttingSceneProps) => {
     });
   };
 
-  const handleCutCake = () => {
-    setCakeState("cutting");
-    setShowKnife(true);
-    playCelebrationSound();
-
-    // Knife animation duration
-    setTimeout(() => {
-      setCakeState("cut");
-      setShowKnife(false);
-      
-      // Create particle burst
-      const newParticles = Array.from({ length: 30 }, (_, i) => ({
-        id: i,
-        x: 50 + (Math.random() - 0.5) * 40,
-        y: 50 + (Math.random() - 0.5) * 40,
-        type: ["sprinkle", "heart", "glitter"][i % 3],
-      }));
-      setParticles(newParticles);
-
-      // Show birthday message
-      setTimeout(() => {
-        setShowMessage(true);
-        setFlashLights(true);
-        playBirthdayMelody();
-        
-        // Stop flashing after 3 seconds
-        setTimeout(() => {
-          setFlashLights(false);
-        }, 3000);
-
-        // Show cake pieces after message
-        setTimeout(() => {
-          setShowPieces(true);
-          
-          // Show navigation buttons after pieces
-          setTimeout(() => {
-            setShowNavigation(true);
-          }, 1000);
-        }, 2000);
-      }, 1000);
-    }, 2000);
-  };
-
   const handlePieceClick = (pieceId: number) => {
     setCakePieces((prev) =>
       prev.map((piece) =>
@@ -212,7 +173,10 @@ export const CakeCuttingScene = ({ onContinue }: CakeCuttingSceneProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-pink-400 via-purple-500 to-blue-600 overflow-hidden z-50">
+    <div className="fixed inset-0 bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 overflow-hidden z-50">
+      {/* Show fireworks after cake is cut */}
+      {showFireworks && <FireworksMessage />}
+
       {/* Ambient Lights */}
       <div className="absolute inset-0">
         {lights.map((light) => (
@@ -282,7 +246,7 @@ export const CakeCuttingScene = ({ onContinue }: CakeCuttingSceneProps) => {
               <div className="relative w-80 h-80 sm:w-96 sm:h-96 md:w-[28rem] md:h-[30rem] flex items-center justify-center mb-6">
                 
                 {/* Intact Cake */}
-                {cakeState === "intact" && (
+                {cakePhase === "initial" && (
                   <motion.div
                     className="absolute inset-0 flex items-center justify-center"
                     animate={{
@@ -375,7 +339,7 @@ export const CakeCuttingScene = ({ onContinue }: CakeCuttingSceneProps) => {
 
                 {/* Knife Animation */}
                 <AnimatePresence>
-                  {showKnife && (
+                  {cakePhase === "cutting" && (
                     <motion.div
                       className="absolute top-0 left-1/2 z-20"
                       initial={{ x: -200, y: -100, rotate: -45 }}
@@ -390,7 +354,7 @@ export const CakeCuttingScene = ({ onContinue }: CakeCuttingSceneProps) => {
                 </AnimatePresence>
 
                 {/* Cut Cake Pieces */}
-                {cakeState === "cut" && !showPieces && (
+                {cakePhase === "cut" && (
                   <motion.div
                     className="absolute inset-0 flex items-center justify-center"
                     initial={{ opacity: 0 }}
@@ -455,7 +419,7 @@ export const CakeCuttingScene = ({ onContinue }: CakeCuttingSceneProps) => {
               </div>
 
               {/* Cut the Cake Button - Positioned below cake */}
-              {cakeState === "intact" && (
+              {cakePhase === "initial" && (
                 <motion.button
                   onClick={handleCutCake}
                   className="relative px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white rounded-full font-bold text-lg sm:text-xl md:text-2xl shadow-2xl overflow-hidden group"

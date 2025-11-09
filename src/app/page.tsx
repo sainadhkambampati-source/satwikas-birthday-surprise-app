@@ -19,6 +19,15 @@ import { FutureVision } from "@/components/birthday/FutureVision";
 import { MBBSWarriorBadges } from "@/components/medical/MBBSWarriorBadges";
 import { AnatomicalHeartGlow } from "@/components/birthday/AnatomicalHeartGlow";
 import { BreathingAnimation } from "@/components/birthday/BreathingAnimation";
+import { MagicMirrorWishes } from "@/components/birthday/MagicMirrorWishes";
+import { VirtualPhotoBooth } from "@/components/birthday/VirtualPhotoBooth";
+import { HeartbeatVisualizer } from "@/components/birthday/HeartbeatVisualizer";
+import { WishesWall } from "@/components/birthday/WishesWall";
+import { MBBSQuizGame } from "@/components/birthday/MBBSQuizGame";
+import { MemoryTimeline } from "@/components/birthday/MemoryTimeline";
+import { GiftBoxSurprise } from "@/components/birthday/GiftBoxSurprise";
+import { SignatureMessage } from "@/components/birthday/SignatureMessage";
+import { StarryNightEnding } from "@/components/birthday/StarryNightEnding";
 
 export default function Home() {
   const [showIntro, setShowIntro] = useState(true);
@@ -81,6 +90,15 @@ export default function Home() {
               </div>
             </section>
 
+            {/* 🌟 Feature 2: Magic Mirror Wishes */}
+            <MagicMirrorWishes />
+
+            {/* 📸 Feature 3: Virtual Photo Booth */}
+            <VirtualPhotoBooth />
+
+            {/* 🎶 Feature 4: Heartbeat Music Visualizer */}
+            <HeartbeatVisualizer />
+
             {/* Anatomical Heart Glow */}
             <section className="py-16 px-4 bg-gradient-to-br from-pink-50 via-purple-50 to-white">
               <div className="max-w-4xl mx-auto text-center mb-8">
@@ -110,7 +128,16 @@ export default function Home() {
             <StudyHub />
             <MedAiAssistant />
             <MotivationZone />
+
+            {/* 💌 Feature 5: Wishes Wall from Friends */}
+            <WishesWall />
+
+            {/* 🎓 Feature 6: Mini Quiz / Fun Game */}
+            <MBBSQuizGame />
             
+            {/* 💫 Feature 7: Memory Timeline */}
+            <MemoryTimeline />
+
             {/* MBBS Journey Book */}
             <MBBSJourneyBook />
             
@@ -119,8 +146,17 @@ export default function Home() {
             
             {/* MBBS Warrior Badges */}
             <MBBSWarriorBadges />
+
+            {/* 💐 Feature 8: Gift Box Surprise Animation */}
+            <GiftBoxSurprise />
             
             <SurpriseGift />
+
+            {/* 📜 Feature 9: Animated Signature Message */}
+            <SignatureMessage />
+
+            {/* 🔮 Feature 10: Starry Night Ending Scene */}
+            <StarryNightEnding />
           </main>
 
           <Footer />
